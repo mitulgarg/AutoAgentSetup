@@ -1,0 +1,4 @@
+This request is a "How To" or "Consultative" query related to Oracle Fusion HCM .
+General guidance or consultative type questions are best addressed on Cloud Customer Connect, Oracle’s premier online cloud community, where you can easily get help from Oracle experts and advice from other customers in our discussion forums. Refer to the KM Note Get answers to your How-To questions on Cloud Customer Connect (Doc ID 2919796.1).
+To ensure you have the best experience, review https://community.oracle.com/customerconnect/kb/articles/7-how-to-ask-a-good-question .
+If you are new to Cloud Customer Connect communities, click on the Register button at the top of the page to get started or review https://community.oracle.com/customerconnect/kb/articles/32-how-to-become-a-member .

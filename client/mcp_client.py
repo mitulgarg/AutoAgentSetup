@@ -69,6 +69,8 @@ class MCPClient:
 
             message = response.choices[0].message
 
+            print(message)
+
             # Tool call requested
             if message.function_call:
                 tool_name = message.function_call.name
@@ -86,6 +88,7 @@ class MCPClient:
                 })
             else:
                 return message.content
+            
 
     async def chat_loop(self):
         """REPL loop to interact with agent."""
@@ -112,6 +115,7 @@ async def main():
     client = MCPClient()
     try:
         await client.connect(sys.argv[1])
+        print("MCP SERVER - "+ sys.argv[1])
         await client.chat_loop()
     finally:
         await client.cleanup()

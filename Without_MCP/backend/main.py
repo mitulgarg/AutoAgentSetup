@@ -72,7 +72,6 @@ def user_context_tool() -> str:
     pass
 
 
-
 def list_uploaded_documents() -> str:
     """List all documents that have been previously uploaded."""
     pass

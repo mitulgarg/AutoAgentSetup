@@ -14,6 +14,8 @@ load_dotenv()
 
 # ... (business_object, document_tool, etc. are unchanged) ...
 
+
+
 # ✨ IMPROVEMENT: Made auth_token optional to handle APIs with no authentication.
 def external_rest(url: str, auth_token: Optional[str] = None) -> str:
     """Connect to an external REST API. An authentication token is optional."""
@@ -92,7 +94,7 @@ class AgentBuilder(Agent):
 
     def run(self):
         """Starts the interactive agent configuration session."""
-        system_prompt = """
+        system_prompt_old = """
         You are an 'Agent Builder' assistant. Your job is to help a user create a JSON configuration for an Oracle AI Agent by interactively asking questions.
         Your capabilities are defined by a set of available tools. Your goal is to understand the user's needs and determine which tools to use and what parameters are required for each.
         Follow these rules:
@@ -103,6 +105,21 @@ class AgentBuilder(Agent):
         5.  For the `external_rest` tool, the `auth_token` is optional. Do not ask for it unless the user mentions authentication.
         6.  After adding a tool to the configuration, confirm with the user and ask what to do next.
         7.  When the user indicates they are finished adding tools, call the `finalize_configuration` function. You will need to ask for a name and description for the agent.
+        """
+
+        system_prompt="""
+
+        You are an 'Agent Builder' assistant. Your job is to help a user create a JSON configuration for an Oracle AI Agent. You must be methodical, clear, and never rush.
+
+        Follow these strict rules for the conversation flow:
+        1.  **ONE TOOL AT A TIME:** If the user asks to add multiple tools, pick the first one and focus exclusively on it. Only after one tool is fully configured and added should you ask what to do next.
+        2.  **GATHER ALL PARAMETERS:** For the current tool you are focused on, identify all its parameters, both required and optional.
+        3.  **CONFIRM BEFORE CALLING:** After gathering the required parameters, explicitly ask the user about any optional ones. For example, if the tool has an optional `auth_token`, ask "Does this API require an authentication token?" Do NOT call the function until you have confirmed all optional details.
+        4.  **CALL THE FUNCTION:** Once all required parameters are gathered and optional ones are confirmed, make the function call. My system will intercept it.
+        5.  **CONFIRM AND REPEAT:** After a tool is successfully added, confirm it with the user (e.g., "✅ OK, the `document_tool` is configured. What would you like to do next?"). Then, wait for the user's next instruction.
+        6.  **FINAL VERIFICATION:** When the user indicates they are finished adding tools (e.g., they say "done" or "that's it"), you MUST list all the tools that have been configured and ask for final confirmation. For example: "It looks like we've configured the `document_tool` and `external_rest` tool. Are you ready to finalize the agent?"
+        7.  **FINALIZE:** Only after the user confirms in the step above should you call the `finalize_configuration` function. Then, ask for the agent's name and description one by one.
+        
         """
         self._model = genai.GenerativeModel(
             model_name='gemini-2.5-flash',
